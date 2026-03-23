@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小王子的亲子问答星球</title>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --desert-yellow: #F2E3C9;
+            --starry-blue: #1A2A3A;
+            --rose-red: #E88D67;
+            --text-dark: #2C3E50;
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1A2A3A 0%, #2C3E50 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 星空背景装饰 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* 简约装饰剪影 */
+        .decoration {
+            position: absolute;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: -1;
+            transition: all 0.5s ease;
+        }
+        .decoration.prince { left: 5%; bottom: 10%; width: 120px; }
+        .decoration.fox { right: 8%; bottom: 15%; width: 100px; }
+        .decoration.rose { left: 15%; top: 15%; width: 60px; color: var(--rose-red); }
+        .decoration.stars { right: 10%; top: 10%; width: 80px; color: var(--desert-yellow); }
+
+        header {
+            margin-bottom: 2rem;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 2.8rem;
+            color: var(--desert-yellow);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .progress-text {
+            color: var(--desert-yellow);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.1);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--rose-red), #ffb08e);
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 卡片容器 */
+        .card-container {
+            perspective: 1200px;
+            width: 520px;
+            height: 380px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+            .card-container {
+                width: 92vw;
+                height: 55vh;
+            }
+            h1 { font-size: 2rem; }
+            .decoration.prince { width: 80px; }
+            .decoration.fox { width: 60px; }
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            border-radius: 30px;
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 30px;
+            background: var(--card-bg);
+            border: 3px solid var(--desert-yellow);
+            box-shadow: inset 0 0 20px rgba(242, 227, 201, 0.3);
+        }
+
+        .card-front {
+            z-index: 2;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: var(--desert-yellow);
+            color: var(--text-dark);
+            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 70%);
+        }
+
+        .question-text {
+            font-size: 2rem;
+            line-height: 1.5;
+            font-weight: 600;
+            color: var(--starry-blue);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .interpretation-text {
+            font-size: 1.3rem;
+            line-height: 1.7;
+            font-style: italic;
+            color: #444;
+        }
+
+        .card-hint {
+            position: absolute;
+            bottom: 25px;
+            font-size: 0.85rem;
+            color: #666;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* 按钮 */
+        .controls {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1.5rem;
+            z-index: 10;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--desert-yellow);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--rose-red);
+            color: white;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(232, 141, 103, 0.5);
+            border-color: transparent;
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1);
+        }
+
+        .btn-random {
+            background: var(--rose-red);
+            color: white;
+            padding: 0.9rem 3rem;
+            box-shadow: 0 5px 15px rgba(232, 141, 103, 0.3);
+        }
+
+        .btn-random:hover {
+            background: #f09a78;
+        }
+
+        .footer-controls {
+            margin-top: 4rem;
+            z-index: 10;
+        }
+
+        .btn-reset {
+            font-size: 0.85rem;
+            opacity: 0.5;
+            background: transparent;
+            border: 1px solid rgba(242, 227, 201, 0.3);
+            padding: 0.5rem 1.2rem;
+        }
+
+        .btn-reset:hover {
+            opacity: 1;
+            background: rgba(242, 227, 201, 0.05);
+            border-color: var(--desert-yellow);
+        }
+
+        /* 动画 */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--desert-yellow);
+            padding: 2.5rem;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 350px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border: 2px solid white;
+        }
+
+        .modal h2 {
+            margin-bottom: 1rem;
+            color: var(--starry-blue);
+            font-family: 'Indie Flower', cursive;
+            font-size: 2rem;
+        }
+
+        .modal p {
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .modal-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 装饰剪影 -->
+    <svg class="decoration prince floating" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50 20c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 25c-11 0-20 9-20 20v25h40V65c0-11-9-20-20-20z"/>
+    </svg>
+    <svg class="decoration fox floating" style="animation-delay: 1s;" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M80 40l-15 10c-5-5-15-5-20 0l-15-10 5 25c-5 5-5 15 0 20l25 5 25-5c5-5 5-15 0-20l5-25z"/>
+    </svg>
+    <svg class="decoration rose floating" style="animation-delay: 2s;" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50 80c-10 0-18-8-18-18 0-5 2-10 6-13l12-19 12 19c4 3 6 8 6 13 0 10-8 18-18 18zM50 30l-5 8c-3 2-5 6-5 10 0 5 4 10 10 10s10-5 10-10c0-4-2-8-5-10l-5-8z"/>
+    </svg>
+    <svg class="decoration stars floating" style="animation-delay: 0.5s;" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50 10l12 25 28 4-20 20 5 28-25-13-25 13 5-28-20-20 28-4z"/>
+    </svg>
+
+    <header>
+        <h1>小王子的亲子问答星球</h1>
+    </header>
+
+    <div class="progress-container">
+        <span class="progress-text" id="progressText">已展示 0 / 100</span>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <p class="question-text" id="questionText">加载中...</p>
+                <span class="card-hint">点击卡片查看解读</span>
+            </div>
+            <div class="card-face card-back">
+                <p class="interpretation-text" id="interpretationText">解读内容...</p>
+                <span class="card-hint">点击卡片回到问题</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="prevBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            上一张
+        </button>
+        <button class="btn btn-random" id="randomBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/><path d="m18 14 4 4-4 4"/></svg>
+            随机
+        </button>
+        <button class="btn" id="nextBtn">
+            下一张
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+    </div>
+
+    <div class="footer-controls">
+        <button class="btn btn-reset" id="resetBtn">重置所有进度</button>
+    </div>
+
+    <!-- 弹窗：探索完毕 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h2>探索完毕</h2>
+            <p>所有的问答都已展示过了，是否要重置进度重新开始？</p>
+            <div class="modal-btns">
+                <button class="btn" style="color: #333; background: #ddd;" id="modalCancel">取消</button>
+                <button class="btn btn-random" id="modalConfirm">重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗：重置确认 -->
+    <div class="modal-overlay" id="resetModalOverlay">
+        <div class="modal">
+            <h2>重置进度</h2>
+            <p>确定要重置所有已展示的进度吗？这将清空您的探索记录。</p>
+            <div class="modal-btns">
+                <button class="btn" style="color: #333; background: #ddd;" id="resetModalCancel">取消</button>
+                <button class="btn btn-random" id="resetModalConfirm">确定重置</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let currentIndex = 0;
+        let viewedIds = new Set();
+
+        // DOM 元素
+        const card = document.getElementById('card');
+        const cardContainer = document.getElementById('cardContainer');
+        const questionText = document.getElementById('questionText');
+        const interpretationText = document.getElementById('interpretationText');
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const randomBtn = document.getElementById('randomBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const modalCancel = document.getElementById('modalCancel');
+
+        const resetModalOverlay = document.getElementById('resetModalOverlay');
+        const resetModalConfirm = document.getElementById('resetModalConfirm');
+        const resetModalCancel = document.getElementById('resetModalCancel');
+
+        // 初始化
+        async function init() {
+            try {
+                const response = await fetch('questions.json');
+                questions = await response.json();
+                
+                // 加载进度
+                loadProgress();
+                
+                // 显示第一张
+                updateCard();
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                questionText.innerText = '加载数据失败，请刷新重试。';
+            }
+        }
+
+        // 加载进度
+        function loadProgress() {
+            const saved = localStorage.getItem('littlePrinceViewed');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    viewedIds = new Set(parsed);
+                } catch (e) {
+                    viewedIds = new Set();
+                }
+            }
+            updateProgressUI();
+        }
+
+        // 保存进度
+        function saveProgress() {
+            localStorage.setItem('littlePrinceViewed', JSON.stringify([...viewedIds]));
+            updateProgressUI();
+        }
+
+        // 更新进度 UI
+        function updateProgressUI() {
+            const count = viewedIds.size;
+            const total = questions.length || 100;
+            progressText.innerText = `已展示 ${count} / ${total}`;
+            progressBar.style.width = `${(count / total) * 100}%`;
+        }
+
+        // 更新卡片内容
+        function updateCard() {
+            const q = questions[currentIndex];
+            if (!q) return;
+
+            // 标记当前卡片为已读
+            if (!viewedIds.has(q.id)) {
+                viewedIds.add(q.id);
+                saveProgress();
+            }
+
+            // 移除翻转状态
+            card.classList.remove('is-flipped');
+
+            // 延迟更新文字以配合动画
+            setTimeout(() => {
+                questionText.innerText = q.question;
+                interpretationText.innerText = q.interpretation;
+            }, 100);
+        }
+
+        // 翻转卡片
+        cardContainer.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+        });
+
+        // 上一张
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + questions.length) % questions.length;
+            updateCard();
+        });
+
+        // 下一张
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % questions.length;
+            updateCard();
+        });
+
+        // 随机
+        randomBtn.addEventListener('click', () => {
+            const unviewed = questions.filter(q => !viewedIds.has(q.id));
+            
+            if (unviewed.length === 0) {
+                modalOverlay.style.display = 'flex';
+                return;
+            }
+
+            const randomIdx = Math.floor(Math.random() * unviewed.length);
+            const selectedQ = unviewed[randomIdx];
+            
+            // 找到在原数组中的索引
+            currentIndex = questions.findIndex(q => q.id === selectedQ.id);
+            
+            // updateCard 会处理标记已读和保存
+            updateCard();
+        });
+
+        // 重置
+        function resetProgress() {
+            localStorage.removeItem('littlePrinceViewed');
+            viewedIds.clear();
+            currentIndex = 0;
+            updateProgressUI();
+            updateCard();
+            modalOverlay.style.display = 'none';
+            resetModalOverlay.style.display = 'none';
+        }
+
+        resetBtn.addEventListener('click', () => {
+            resetModalOverlay.style.display = 'flex';
+        });
+
+        resetModalConfirm.addEventListener('click', resetProgress);
+        resetModalCancel.addEventListener('click', () => {
+            resetModalOverlay.style.display = 'none';
+        });
+
+        modalConfirm.addEventListener('click', resetProgress);
+        modalCancel.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+        });
+
+        init();
+    </script>
+</body>
+</html>
