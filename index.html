@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小王子的亲子问答星球</title>
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>小王子的亲子问答星球 - 沉浸版</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --desert-yellow: #F2E3C9;
-            --starry-blue: #1A2A3A;
-            --rose-red: #E88D67;
-            --text-dark: #2C3E50;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --midnight-blue: #0B1026;
+            --deep-space: #161B33;
+            --star-gold: #FFD700;
+            --rose-red: #FF4D4D;
+            --scarf-yellow: #FFD93D;
+            --scarf-orange: #FF8400;
+            --text-light: #E0E0E0;
+            --card-blue: rgba(20, 30, 70, 0.85);
         }
 
         * {
@@ -21,114 +24,179 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #1A2A3A 0%, #2C3E50 100%);
-            color: var(--text-dark);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at center, #1B2735 0%, #090A0F 100%);
+            color: var(--text-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
         }
 
-        /* 星空背景装饰 */
-        body::before {
-            content: '';
-            position: absolute;
+        /* 动态星空 */
+        #stars-container {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            background-position: 0 0, 40px 60px, 130px 270px;
-            opacity: 0.3;
-            z-index: -1;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        /* 简约装饰剪影 */
-        .decoration {
+        .star {
             position: absolute;
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: -1;
-            transition: all 0.5s ease;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
         }
-        .decoration.prince { left: 5%; bottom: 10%; width: 120px; }
-        .decoration.fox { right: 8%; bottom: 15%; width: 100px; }
-        .decoration.rose { left: 15%; top: 15%; width: 60px; color: var(--rose-red); }
-        .decoration.stars { right: 10%; top: 10%; width: 80px; color: var(--desert-yellow); }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 流星 */
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+            box-shadow: 0 0 10px white;
+            animation: shoot 3s linear infinite;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0; }
+            10% { opacity: 1; }
+            30% { transform: translateX(-500px) translateY(500px) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* 装饰元素 */
+        .illustration {
+            position: fixed;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255,215,0,0.2));
+        }
+
+        .prince-img {
+            bottom: 5%;
+            left: 5%;
+            width: 120px;
+            animation: float-prince 6s infinite ease-in-out;
+        }
+
+        .rose-img {
+            top: 15%;
+            left: 8%;
+            width: 50px;
+            animation: float-rose 5s infinite ease-in-out;
+        }
+
+        .fox-img {
+            bottom: 8%;
+            right: 8%;
+            width: 70px;
+            animation: float-fox 7s infinite ease-in-out;
+        }
+
+        @keyframes float-prince { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-15px) rotate(2deg); } }
+        @keyframes float-rose { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
+        @keyframes float-fox { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-12px) rotate(-3deg); } }
+
+        .birds-img {
+            top: 5%;
+            right: 15%;
+            width: 140px;
+            opacity: 0.5;
+            animation: float-birds 12s infinite ease-in-out;
+        }
+
+        @keyframes float-birds {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, 20px); }
+        }
 
         header {
+            margin-top: -50px;
             margin-bottom: 2rem;
             text-align: center;
             z-index: 10;
         }
 
         h1 {
-            font-family: 'Indie Flower', cursive;
-            font-size: 2.8rem;
-            color: var(--desert-yellow);
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
-            margin-bottom: 0.5rem;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 3rem;
+            color: var(--star-gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            letter-spacing: 2px;
         }
 
-        .progress-container {
-            margin-bottom: 1.5rem;
-            text-align: center;
-            width: 80%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .progress-text {
-            color: var(--desert-yellow);
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            display: block;
-            font-weight: 500;
-        }
-
-        .progress-bar-bg {
-            background: rgba(255, 255, 255, 0.1);
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .progress-bar-fill {
-            background: linear-gradient(90deg, var(--rose-red), #ffb08e);
-            height: 100%;
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 卡片容器 */
-        .card-container {
-            perspective: 1200px;
-            width: 520px;
-            height: 380px;
-            cursor: pointer;
+        /* 围巾进度条 */
+        .scarf-progress {
+            margin-bottom: 2rem;
+            width: 320px;
+            position: relative;
             z-index: 10;
         }
 
+        .progress-label {
+            display: block;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--star-gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .scarf-track {
+            height: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .scarf-fill {
+            height: 100%;
+            width: 0%;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--scarf-yellow),
+                var(--scarf-yellow) 10px,
+                var(--scarf-orange) 10px,
+                var(--scarf-orange) 20px
+            );
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 10px var(--scarf-yellow);
+        }
+
+        /* 卡片设计 */
+        .card-container {
+            perspective: 1500px;
+            width: 500px;
+            height: 340px;
+            z-index: 10;
+            cursor: pointer;
+        }
+
         @media (max-width: 600px) {
-            .card-container {
-                width: 92vw;
-                height: 55vh;
-            }
+            .card-container { width: 90vw; height: 50vh; }
             h1 { font-size: 2rem; }
-            .decoration.prince { width: 80px; }
-            .decoration.fox { width: 60px; }
+            .planet-b612 { width: 400px; height: 400px; bottom: -100px; }
+            .prince-img { bottom: 280px; transform: translateX(-80px); width: 70px; }
+            .rose-img { bottom: 290px; transform: translateX(40px); width: 30px; }
+            .fox-img { bottom: 285px; transform: translateX(-20px); width: 40px; }
         }
 
         .card {
@@ -136,9 +204,7 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-            border-radius: 30px;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card.is-flipped {
@@ -150,505 +216,483 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
+            border-radius: 25px;
+            padding: 2.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2.5rem;
             text-align: center;
-            border-radius: 30px;
-            background: var(--card-bg);
-            border: 3px solid var(--desert-yellow);
-            box-shadow: inset 0 0 20px rgba(242, 227, 201, 0.3);
-        }
-
-        .card-front {
-            z-index: 2;
+            background: var(--card-blue);
+            border: 2px dashed var(--star-gold);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 30px rgba(255,215,0,0.1);
+            backdrop-filter: blur(10px);
         }
 
         .card-back {
             transform: rotateY(180deg);
-            background: var(--desert-yellow);
-            color: var(--text-dark);
-            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 70%);
+            background: rgba(10, 20, 50, 0.95);
         }
 
         .question-text {
-            font-size: 2rem;
-            line-height: 1.5;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            color: #FFF;
             font-weight: 600;
-            color: var(--starry-blue);
-            font-family: 'Inter', sans-serif;
+            margin-bottom: 1rem;
         }
 
         .interpretation-text {
-            font-size: 1.3rem;
-            line-height: 1.7;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #D1D1D1;
             font-style: italic;
-            color: #444;
         }
 
-        .card-hint {
+        .hint {
             position: absolute;
-            bottom: 25px;
-            font-size: 0.85rem;
-            color: #666;
-            opacity: 0.8;
+            bottom: 20px;
+            font-size: 0.75rem;
+            color: var(--star-gold);
+            opacity: 0.6;
             letter-spacing: 1px;
         }
 
-        /* 按钮 */
+        /* 按钮控制 */
         .controls {
-            margin-top: 3rem;
+            margin-top: 2.5rem;
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             z-index: 10;
         }
 
         .btn {
-            padding: 0.9rem 1.8rem;
+            padding: 0.8rem 1.5rem;
             border: none;
-            border-radius: 30px;
+            border-radius: 25px;
             background: rgba(255, 255, 255, 0.1);
-            color: var(--desert-yellow);
+            color: var(--star-gold);
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 215, 0, 0.3);
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            font-size: 1rem;
+            gap: 8px;
+            backdrop-filter: blur(5px);
         }
 
         .btn:hover {
-            background: var(--rose-red);
-            color: white;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(232, 141, 103, 0.5);
-            border-color: transparent;
+            background: var(--star-gold);
+            color: var(--midnight-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
 
-        .btn:active {
-            transform: translateY(-1px) scale(1);
+        .btn-main {
+            background: var(--star-gold);
+            color: var(--midnight-blue);
+            padding: 0.8rem 2.5rem;
         }
 
-        .btn-random {
-            background: var(--rose-red);
-            color: white;
-            padding: 0.9rem 3rem;
-            box-shadow: 0 5px 15px rgba(232, 141, 103, 0.3);
+        .btn-main:hover {
+            background: #FFE44D;
         }
 
-        .btn-random:hover {
-            background: #f09a78;
-        }
-
-        .footer-controls {
-            margin-top: 4rem;
+        .reset-container {
+            margin-top: 2rem;
             z-index: 10;
         }
 
         .btn-reset {
-            font-size: 0.85rem;
-            opacity: 0.5;
+            font-size: 0.75rem;
+            opacity: 0.4;
             background: transparent;
-            border: 1px solid rgba(242, 227, 201, 0.3);
-            padding: 0.5rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
         }
 
         .btn-reset:hover {
             opacity: 1;
-            background: rgba(242, 227, 201, 0.05);
-            border-color: var(--desert-yellow);
+            background: rgba(255, 77, 77, 0.2);
+            border-color: var(--rose-red);
         }
 
-        /* 动画 */
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .floating {
-            animation: floating 4s ease-in-out infinite;
-        }
-
-        /* 弹窗样式 */
+        /* 弹窗 */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 100;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .modal {
-            background: var(--desert-yellow);
+            background: var(--deep-space);
             padding: 2.5rem;
-            border-radius: 30px;
+            border-radius: 25px;
             text-align: center;
-            max-width: 350px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            border: 2px solid white;
+            max-width: 380px;
+            border: 2px solid var(--star-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
         }
 
         .modal h2 {
+            color: var(--star-gold);
             margin-bottom: 1rem;
-            color: var(--starry-blue);
-            font-family: 'Indie Flower', cursive;
-            font-size: 2rem;
+            font-family: 'ZCOOL KuaiLe', cursive;
         }
 
         .modal p {
+            color: #CCC;
             margin-bottom: 2rem;
-            color: var(--text-dark);
             line-height: 1.6;
         }
 
         .modal-btns {
             display: flex;
-            justify-content: center;
             gap: 1rem;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- 装饰剪影 -->
-    <svg class="decoration prince floating" viewBox="0 0 100 100" fill="currentColor">
-        <path d="M50 20c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 25c-11 0-20 9-20 20v25h40V65c0-11-9-20-20-20z"/>
+    <!-- 装饰元素 -->
+    <div id="stars-container"></div>
+
+    <!-- 小王子 SVG -->
+    <svg class="illustration prince-img" viewBox="0 0 100 120">
+        <!-- 身体 -->
+        <path d="M40 100 L60 100 L55 60 L45 60 Z" fill="#2C3E50" />
+        <!-- 披风/围巾 -->
+        <path d="M45 60 Q30 65 20 85 Q35 75 45 65 Z" fill="#FFD93D">
+            <animate attributeName="d" values="M45 60 Q30 65 20 85 Q35 75 45 65 Z; M45 60 Q25 70 15 90 Q35 75 45 65 Z; M45 60 Q30 65 20 85 Q35 75 45 65 Z" dur="3s" repeatCount="indefinite" />
+        </path>
+        <path d="M55 60 Q70 65 80 85 Q65 75 55 65 Z" fill="#FFD93D" />
+        <!-- 头部 -->
+        <circle cx="50" cy="45" r="15" fill="#FFE0BD" />
+        <!-- 头发 -->
+        <path d="M35 45 Q35 25 50 25 Q65 25 65 45" fill="#FFD700" stroke="#DAA520" stroke-width="1" />
+        <path d="M38 35 L42 28 L48 32 L52 25 L58 32 L62 28 L65 38" fill="none" stroke="#DAA520" stroke-width="2" />
     </svg>
-    <svg class="decoration fox floating" style="animation-delay: 1s;" viewBox="0 0 100 100" fill="currentColor">
-        <path d="M80 40l-15 10c-5-5-15-5-20 0l-15-10 5 25c-5 5-5 15 0 20l25 5 25-5c5-5 5-15 0-20l5-25z"/>
+
+    <!-- 玫瑰 SVG -->
+    <svg class="illustration rose-img" viewBox="0 0 50 80">
+        <path d="M25 80 L25 40" stroke="#2D5A27" stroke-width="3" />
+        <path d="M25 45 Q15 45 15 35 Q15 25 25 25 Q35 25 35 35 Q35 45 25 45 Z" fill="#FF4D4D" />
+        <path d="M25 35 Q20 35 20 30 Q25 25 30 30 Q30 35 25 35 Z" fill="#C0392B" />
+        <path d="M25 60 Q35 55 35 50" fill="none" stroke="#2D5A27" stroke-width="2" />
     </svg>
-    <svg class="decoration rose floating" style="animation-delay: 2s;" viewBox="0 0 100 100" fill="currentColor">
-        <path d="M50 80c-10 0-18-8-18-18 0-5 2-10 6-13l12-19 12 19c4 3 6 8 6 13 0 10-8 18-18 18zM50 30l-5 8c-3 2-5 6-5 10 0 5 4 10 10 10s10-5 10-10c0-4-2-8-5-10l-5-8z"/>
+
+    <!-- 狐狸 SVG -->
+    <svg class="illustration fox-img" viewBox="0 0 60 60">
+        <path d="M10 50 Q30 55 50 50 L55 30 L45 35 L30 20 L15 35 L5 30 Z" fill="#E67E22" />
+        <path d="M25 35 L30 45 L35 35 Z" fill="#FFF" />
+        <circle cx="22" cy="38" r="2" fill="#000" />
+        <circle cx="38" cy="38" r="2" fill="#000" />
     </svg>
-    <svg class="decoration stars floating" style="animation-delay: 0.5s;" viewBox="0 0 100 100" fill="currentColor">
-        <path d="M50 10l12 25 28 4-20 20 5 28-25-13-25 13 5-28-20-20 28-4z"/>
+
+    <!-- 飞鸟 SVG -->
+    <svg class="illustration birds-img" viewBox="0 0 100 60">
+        <path d="M10 20 Q20 10 30 20 M30 20 Q40 10 50 20" fill="none" stroke="white" stroke-width="2" />
+        <path d="M40 40 Q50 30 60 40 M60 40 Q70 30 80 40" fill="none" stroke="white" stroke-width="2" />
+        <path d="M60 15 Q70 5 80 15 M80 15 Q90 5 100 15" fill="none" stroke="white" stroke-width="2" />
     </svg>
 
     <header>
         <h1>小王子的亲子问答星球</h1>
     </header>
 
-    <div class="progress-container">
-        <span class="progress-text" id="progressText">已展示 0 / 100</span>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progressBar"></div>
+    <div class="scarf-progress">
+        <span class="progress-label" id="progressText">探索进度: 0 / 100</span>
+        <div class="scarf-track">
+            <div class="scarf-fill" id="progressBar"></div>
         </div>
     </div>
 
     <div class="card-container" id="cardContainer">
         <div class="card" id="card">
             <div class="card-face card-front">
-                <p class="question-text" id="questionText">加载中...</p>
-                <span class="card-hint">点击卡片查看解读</span>
+                <p class="question-text" id="questionText">正在降落星球...</p>
+                <span class="hint">点击卡片 听听小王子的解读</span>
             </div>
             <div class="card-face card-back">
                 <p class="interpretation-text" id="interpretationText">解读内容...</p>
-                <span class="card-hint">点击卡片回到问题</span>
+                <span class="hint">点击卡片 回到问题</span>
             </div>
         </div>
     </div>
 
     <div class="controls">
         <button class="btn" id="prevBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            上一张
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            上一颗星
         </button>
-        <button class="btn btn-random" id="randomBtn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/><path d="m18 14 4 4-4 4"/></svg>
-            随机
+        <button class="btn btn-main" id="randomBtn">
+            ✨ 随机探索
         </button>
         <button class="btn" id="nextBtn">
-            下一张
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            下一颗星
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
         </button>
     </div>
 
-    <div class="footer-controls">
+    <div class="reset-container">
         <button class="btn btn-reset" id="resetBtn">重置所有进度</button>
     </div>
 
-    <!-- 弹窗：探索完毕 -->
+    <!-- 弹窗 -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <h2>探索完毕</h2>
-            <p>所有的问答都已展示过了，是否要重置进度重新开始？</p>
+            <p>你已经访问了所有的星星。要重新开始这段旅程吗？</p>
             <div class="modal-btns">
-                <button class="btn" style="color: #333; background: #ddd;" id="modalCancel">取消</button>
-                <button class="btn btn-random" id="modalConfirm">重置</button>
+                <button class="btn" style="background: #444; color: white; border: none;" id="modalCancel">再看看</button>
+                <button class="btn btn-main" id="modalConfirm">重新开始</button>
             </div>
         </div>
     </div>
 
-    <!-- 弹窗：重置确认 -->
     <div class="modal-overlay" id="resetModalOverlay">
         <div class="modal">
-            <h2>重置进度</h2>
-            <p>确定要重置所有已展示的进度吗？这将清空您的探索记录。</p>
+            <h2>重置记录</h2>
+            <p>确定要抹去所有的探索足迹吗？</p>
             <div class="modal-btns">
-                <button class="btn" style="color: #333; background: #ddd;" id="resetModalCancel">取消</button>
-                <button class="btn btn-random" id="resetModalConfirm">确定重置</button>
+                <button class="btn" style="background: #444; color: white; border: none;" id="resetModalCancel">取消</button>
+                <button class="btn btn-main" id="resetModalConfirm">确定重置</button>
             </div>
         </div>
     </div>
 
     <script>
         const questions = [
-  { "id": 1, "category": "感恩类", "question": "谢谢你，因为...", "interpretation": "就像小王子给玫瑰浇水，每一句“谢谢”都会让那颗心开出更美的花。你记着的那些小事，是对方星球上最亮的星星。" },
-  { "id": 2, "category": "感恩类", "question": "感谢你为我做的...", "interpretation": "小王子说，仪式感就是使某一天与其他日子不同。谢谢你做的这件事，让我的这一天闪闪发光。" },
-  { "id": 3, "category": "感恩类", "question": "最想对你说谢谢的瞬间是...", "interpretation": "那一刻像沙漠里的井水，后来每次想起，都像又喝到了甘甜。说出来，让那口井永不干涸。" },
-  { "id": 4, "category": "感恩类", "question": "你给过我最好的礼物是...", "interpretation": "重要的东西用眼睛是看不见的。你给的这份礼物，用心才能看见，它一直在我心里。" },
-  { "id": 5, "category": "感恩类", "question": "你教会我最重要的事是...", "interpretation": "小王子从狐狸那里学会了“驯服”，我从你这里学会了...。从此，我们成了彼此独一无二的人。" },
-  { "id": 6, "category": "感恩类", "question": "我最感激你陪我...", "interpretation": "哪怕什么都不做，只是坐在我身边，就像小王子看日落。有你陪着，那天边的晚霞都变得更温柔。" },
-  { "id": 7, "category": "感恩类", "question": "你让我想起被理解的那次是...", "interpretation": "那一刻，你像小王子懂他的玫瑰那样懂我——知道我需要什么，即使我什么都没说。" },
-  { "id": 8, "category": "感恩类", "question": "你为我做过最让我感动的事是...", "interpretation": "这件事像小王子给玫瑰罩上的玻璃罩，保护着我心里最柔软的地方。我一直记得。" },
-  { "id": 9, "category": "感恩类", "question": "我最想替你分担的事是...", "interpretation": "如果我能帮你拔掉猴面包树的幼苗，你会不会轻松一点？让我试试，哪怕只是陪着你。" },
-  { "id": 10, "category": "感恩类", "question": "最近一次觉得你受委屈了是...", "interpretation": "你受委屈的时候，像被风吹歪的小花。我想把你扶正，告诉你：我在呢。" },
-  { "id": 11, "category": "感恩类", "question": "我最想回报你的一件事是...", "interpretation": "你给我的那些好，像星星一样多。我只想摘下一颗最亮的，放在你的手心里。" },
-  { "id": 12, "category": "感恩类", "question": "你让我觉得自己很特别的时刻是...", "interpretation": "那一刻，你看着我的眼神，就像小王子看着他的玫瑰——我知道，在你的星球上，只有我这一朵。" },
-  { "id": 13, "category": "感恩类", "question": "我最喜欢你对我说的一句话是...", "interpretation": "那句话像沙漠里的回声，每次想起来，都让我觉得自己并不孤单。" },
-  { "id": 14, "category": "感恩类", "question": "你默默为我做的那件事我其实知道...", "interpretation": "你像小王子夜里给花浇水，以为我不知道。其实我都看见了，只是没说。现在我想告诉你：谢谢你。" },
-  { "id": 15, "category": "感恩类", "question": "我最想为你做的一件事是...", "interpretation": "如果你是我的玫瑰，我想为你做一件只有我能做的事。告诉我，是什么。" },
-  { "id": 16, "category": "心疼类", "question": "最近一次心疼你是因为...", "interpretation": "那一刻，我仿佛看见你像被烈日晒蔫的玫瑰。我想为你遮住那道光，哪怕只有一会儿。" },
-  { "id": 17, "category": "心疼类", "question": "我最怕你累着的时候是...", "interpretation": "就像小王子担心他的玫瑰被风吹倒。你累的时候，我心里就刮起了风。" },
-  { "id": 18, "category": "心疼类", "question": "看到你难过我却没说话那次是...", "interpretation": "有时候，话像沙子一样堵在喉咙里。但我的沉默不是没看见，是我不知道该怎么安慰你。" },
-  { "id": 19, "category": "心疼类", "question": "你为了不让我担心，隐瞒过的事是...", "interpretation": "你像那朵骄傲的玫瑰，说自己不怕老虎，其实只是不想让我担心。可你忘了，用心才能看见。" },
-  { "id": 20, "category": "心疼类", "question": "我最想替你承受的事是...", "interpretation": "如果能把你的痛苦种在我的星球上，让它变成一棵普通的树，我愿意。" },
-  { "id": 21, "category": "心疼类", "question": "我看到你特别累却还在坚持的时候是...", "interpretation": "你像小王子一天看了四十三次日落，明明累了，却还在等。那一刻，我想抱住你。" },
-  { "id": 22, "category": "心疼类", "question": "你藏在笑容里的疲惫我看到了...", "interpretation": "笑容像玻璃罩，你把疲惫藏在里面。可我看见了，因为我的心也在看着你。" },
-  { "id": 23, "category": "心疼类", "question": "我最怕你为我担心的事是...", "interpretation": "就像小王子怕玫瑰被羊吃掉。如果你担心我，我也会担心你的担心。所以，我们都要好好的。" },
-  { "id": 24, "category": "心疼类", "question": "你逞强那次我其实想抱抱你...", "interpretation": "你像那朵说“我不怕风”的玫瑰，可我知道你只是在假装。那一刻，我只想轻轻抱住你。" },
-  { "id": 25, "category": "心疼类", "question": "我最希望你对自己好一点的地方是...", "interpretation": "小王子对他的玫瑰那么好，可你对自己却不够好。让我来提醒你：你也值得被好好照顾。" },
-  { "id": 26, "category": "心疼类", "question": "你偷偷哭过的那次我知道是因为...", "interpretation": "眼泪是心里的露水。你的那次哭泣，被我看见了。我想告诉你：哭也没关系，我会陪着你。" },
-  { "id": 27, "category": "心疼类", "question": "我最怕你一个人扛着的事是...", "interpretation": "如果你扛着一座山，我只想帮你分担一块石头。一个人扛太重，我们一起就会轻一些。" },
-  { "id": 28, "category": "心疼类", "question": "你累垮那次我最想说的话是...", "interpretation": "你累倒的时候，像被风吹断的花。我想说的那句话，现在终于能说了：你辛苦了，我在。" },
-  { "id": 29, "category": "心疼类", "question": "我最希望你放下的事是...", "interpretation": "有些事像包袱里的石头，背久了会累。放下吧，我们一起看着它变成脚下的路。" },
-  { "id": 30, "category": "心疼类", "question": "你让我心疼又帮不上忙的时候是...", "interpretation": "那种感觉，像小王子站在沙漠里，想给花浇水却没有水。但我至少可以陪着你，一起等雨来。" },
-  { "id": 31, "category": "骄傲类", "question": "我最为你骄傲的时刻是...", "interpretation": "那一刻，你像小王子终于驯服了狐狸——不是因为征服，而是因为你用心了。我为你骄傲。" },
-  { "id": 32, "category": "骄傲类", "question": "你最让我佩服的优点是...", "interpretation": "这个优点像你星球上独有的花，别处找不到。我真高兴，它长在你身上。" },
-  { "id": 33, "category": "骄傲类", "question": "你做过的让我最自豪的一件事是...", "interpretation": "这件事，让我想起小王子说：“如果你驯服了我，我们就互相需要了。”你让我觉得，我们彼此需要着。" },
-  { "id": 34, "category": "骄傲类", "question": "我最想跟别人炫耀你的是...", "interpretation": "每次说到你，我都像在数我的星星——每一颗都那么亮，让我忍不住想告诉所有人。" },
-  { "id": 35, "category": "骄傲类", "question": "你战胜过最大的困难是...", "interpretation": "困难像沙漠，而你像找到了水井的小王子。你让我相信，只要走，总能找到绿洲。" },
-  { "id": 36, "category": "骄傲类", "question": "你让我最刮目相看的一次是...", "interpretation": "我一直以为你是我的玫瑰，可那次，你像一棵能遮风挡雨的大树。原来你也会长大。" },
-  { "id": 37, "category": "骄傲类", "question": "我最欣赏你性格里的...", "interpretation": "这个性格像你星球的颜色，别人可能看不见，但对我来说，那就是独一无二的光。" },
-  { "id": 38, "category": "骄傲类", "question": "你保持得最好的那个优点是...", "interpretation": "就像小王子始终爱着他的玫瑰，你也一直带着这个优点。时间没有把它带走，真好。" },
-  { "id": 40, "category": "骄傲类", "question": "你做过的最勇敢的事是...", "interpretation": "勇敢不是不怕，而是怕了还要往前走。那一刻，你像独自穿越沙漠的小王子。" },
-  { "id": 41, "category": "骄傲类", "question": "你最让我感动的一次坚持是...", "interpretation": "坚持像每天给花浇水，虽然看不见花开，但你知道它会开。我看见了你的等待。" },
-  { "id": 42, "category": "骄傲类", "question": "我最喜欢你和别人不一样的地方是...", "interpretation": "就像小王子说“使沙漠更美丽的，是某个地方藏着的一口井”，你的不一样，就是让世界更美的秘密。" },
-  { "id": 43, "category": "骄傲类", "question": "你让我觉得当妈妈/孩子真好是因为...", "interpretation": "因为有你，我的星球才不孤单。即使有时会累，但想到你，就觉得一切都值得。" },
-  { "id": 44, "category": "骄傲类", "question": "你最让我安心的特质是...", "interpretation": "就像小王子知道他的玫瑰有玻璃罩，我知道有你在，就什么都不怕。" },
-  { "id": 45, "category": "骄傲类", "question": "你无意识中做过的很厉害的事是...", "interpretation": "有时候，你自己都不知道，你像一颗种子，在我心里开出了花。" },
-  { "id": 46, "category": "骄傲类", "question": "我最想成为你身上的那个优点是...", "interpretation": "你身上有道光，我想借一点，照亮我自己。告诉我，我可以学你吗？" },
-  { "id": 47, "category": "回忆类", "question": "我最难忘我们一起去过的地方是...", "interpretation": "那个地方，现在成了我心中的一颗星星。每次抬头，都会想起我们一起看过的风景。" },
-  { "id": 48, "category": "回忆类", "question": "想起你我就会笑的那个瞬间是...", "interpretation": "这个瞬间像小王子衣兜里的笑声，每次拿出来听听，整个世界都变亮了。" },
-  { "id": 49, "category": "回忆类", "question": "我最想替你挡掉的烦恼是...", "interpretation": "如果烦恼是猴面包树，我想替你拔掉它，让你的星球轻轻松松。" },
-  { "id": 50, "category": "回忆类", "question": "我们笑到停不下来的那次是因为...", "interpretation": "那笑声像一串铃铛，现在想起来，还在我耳边响。那次之后，我的世界里多了一颗会笑的星星。" },
-  { "id": 51, "category": "回忆类", "question": "我最怀念我们做过的某件事是...", "interpretation": "那件事像一条围巾，天冷的时候拿出来，还能闻到阳光的味道。" },
-  { "id": 52, "category": "回忆类", "question": "你给过我最好的惊喜是...", "interpretation": "惊喜像沙漠里忽然出现的花，让我知道，原来平凡的日子里也藏着奇迹。" },
-  { "id": 53, "category": "回忆类", "question": "我们吵过架但最难忘的那次是...", "interpretation": "吵架像一阵风，把我们的叶子吹得哗哗响。可风停之后，根却扎得更深了。" },
-  { "id": 54, "category": "回忆类", "question": "你让我最意外的一次反应是...", "interpretation": "你就像小王子说“我那时什么也不懂！我应该根据她的行为，而不是根据她的话来判断她。”那次，我重新认识了你。" },
-  { "id": 55, "category": "回忆类", "question": "我们共同度过最难忘的那段日子是...", "interpretation": "那段日子像一起穿越沙漠，虽然累，但因为有你，每一步都算数。" },
-  { "id": 56, "category": "回忆类", "question": "我最想回到的那个和你在一起的时刻是...", "interpretation": "如果时间可以倒流，我想回到那一刻，再好好感受一次你的温度。" },
-  { "id": 57, "category": "回忆类", "question": "你为我做过最傻的事是...", "interpretation": "傻得可爱，像小王子给花画屏风。其实你不用那么傻，但我记得这份傻。" },
-  { "id": 58, "category": "回忆类", "question": "我最喜欢的我们的合照是...", "interpretation": "那张照片像一本童话书的封面，每次翻开，故事就又开始了。" },
-  { "id": 59, "category": "回忆类", "question": "你讲给我听的最有趣的故事是...", "interpretation": "那个故事像一颗种子，种在我心里，长成了一棵会讲故事的树。" },
-  { "id": 60, "category": "回忆类", "question": "我们最默契的一次配合是...", "interpretation": "那一刻，我们像两颗星球在同一个轨道上，不用说话，也知道对方在想什么。" },
-  { "id": 61, "category": "回忆类", "question": "我最想重来一遍的那个普通日子是...", "interpretation": "那一天像一杯温水，不烫不凉，刚刚好。如果再有一次，我会喝得慢一点。" },
-  { "id": 62, "category": "期望类", "question": "我希望你永远保持的是...", "interpretation": "就像小王子希望他的玫瑰永远骄傲地开着。你身上的这个，请一定不要丢掉。" },
-  { "id": 63, "category": "期望类", "question": "我想和你一起尝试的事是...", "interpretation": "一起做这件事，就像一起种一棵树。看着它慢慢长大，我们会更幸福。" },
-  { "id": 64, "category": "期望类", "question": "十年后我想和你一起做的是...", "interpretation": "十年后的某一天，我想和你一起看日落，就像小王子在他的星球上那样，什么都不说，只是看着。" },
-  { "id": 65, "category": "期望类", "question": "我最希望你学会的事是...", "interpretation": "学会这件事，就像给自己的星球挖一口井。以后你渴了，随时可以喝到甘甜的水。" },
-  { "id": 66, "category": "期望类", "question": "我想改掉自己身上的...", "interpretation": "我想让我的星球变得更好，这样你住在这里，也会更舒服。" },
-  { "id": 67, "category": "期望类", "question": "我希望我们之间能多聊的是...", "interpretation": "有些话像藏在沙子里的星星，需要我们一起找出来。多聊聊，就能看见更多的光。" },
-  { "id": 68, "category": "期望类", "question": "我最想和你一起去的地方是...", "interpretation": "那个地方，我想和你一起用脚步画一张地图。地图上只有我和你。" },
-  { "id": 69, "category": "期望类", "question": "我希望你为自己多争取的是...", "interpretation": "对自己好一点，就像小王子给他的玫瑰多罩一层玻璃。你值得。" },
-  { "id": 70, "category": "期望类", "question": "我想陪你完成的那件事是...", "interpretation": "让我陪你，就像小王子陪狐狸，一起等待属于我们的麦田颜色。" },
-  { "id": 71, "category": "期望类", "question": "我最欣赏你对待别人的方式是...", "interpretation": "你对别人的好，像小王子对全世界的好。我看在眼里，记在心里。" },
-  { "id": 72, "category": "期望类", "question": "我想成为更好的妈妈/孩子是因为...", "interpretation": "因为我想配得上你给我的爱。你让我想变成更好的人。" },
-  { "id": 73, "category": "期望类", "question": "我希望你比我活得更轻松的地方是...", "interpretation": "我不想你像我一样，被某些石头绊倒。我希望你的路上，花儿比石头多。" },
-  { "id": 74, "category": "期望类", "question": "我最想和你一起实现的目标是...", "interpretation": "这个目标像远方的星星，我们一起去追。追不追得到不重要，一起走才重要。" },
-  { "id": 75, "category": "期望类", "question": "我希望你多爱自己一点的是...", "interpretation": "爱自己，就像小王子爱他的玫瑰。因为只有你把自己照顾好了，才能更好地爱别人。" },
-  { "id": 76, "category": "期望类", "question": "我最期待我们未来的某个时刻是...", "interpretation": "那个时刻像沙漠里的日出，我知道它会来，所以每一天都充满期待。" },
-  { "id": 77, "category": "秘密类", "question": "我一直没告诉你的是...", "interpretation": "有些话像藏在箱子里的秘密，现在打开，让它变成风，吹到你的耳朵里。" },
-  { "id": 78, "category": "秘密类", "question": "我有些害怕...", "interpretation": "害怕像小王子担心他的花被羊吃掉。说出来，你就知道了我的脆弱。" },
-  { "id": 79, "category": "秘密类", "question": "我最想道歉的那件事是...", "interpretation": "做错事就像把星星弄丢了。我想把它找回来，放回原来的地方。" },
-  { "id": 80, "category": "秘密类", "question": "我偷偷为你做过的事是...", "interpretation": "就像小王子夜里给花浇水，不想让你知道。但现在，我想让你知道，你的星球上一直有光。" },
-  { "id": 81, "category": "秘密类", "question": "我其实希望你多问我...", "interpretation": "有些话，你问了，我才好意思说。就像狐狸说“你每天最好在相同的时间来”。" },
-  { "id": 82, "category": "秘密类", "question": "我最不想让你看到我...", "interpretation": "每个人都有想藏起来的影子，但如果你看见了，请别走开。" },
-  { "id": 83, "category": "秘密类", "question": "我后悔对你说过的那句话是...", "interpretation": "那句话像刺，扎了你，也扎了我自己。现在我想把它拔掉。" },
-  { "id": 84, "category": "秘密类", "question": "我藏着没说的那个委屈是...", "interpretation": "委屈像心里的石头，压久了会累。说出来，让它变成一朵云，飘走。" },
-  { "id": 85, "category": "秘密类", "question": "我其实比你想象中更在乎...", "interpretation": "有些在乎，像看不见的风，你感觉不到，但它一直在吹。" },
-  { "id": 86, "category": "秘密类", "question": "我偷偷原谅过你的事是...", "interpretation": "原谅像一场雨，下过之后，天空就晴了。现在我想告诉你，天早就晴了。" },
-  { "id": 87, "category": "秘密类", "question": "我最希望你猜到的小心思是...", "interpretation": "就像小王子希望玫瑰能懂他的沉默。我的心思，你猜到了吗？" },
-  { "id": 88, "category": "秘密类", "question": "我不敢告诉你但我很想说的是...", "interpretation": "这句话像关在盒子里的蝴蝶，现在我想放飞它，让它落在你肩上。" },
-  { "id": 89, "category": "秘密类", "question": "我其实不喜欢但又没说的是...", "interpretation": "不喜欢的事像沙漠里的石头，我不说，是因为不想让你的路更艰难。" },
-  { "id": 90, "category": "秘密类", "question": "我最想听你对我说的一句话是...", "interpretation": "那句话像井水，我等了很久。如果你说了，我会像喝到水一样，重新有力气。" },
-  { "id": 91, "category": "秘密类", "question": "我藏着的小愿望是...", "interpretation": "这个小愿望像一朵还没开的花。说出来，也许阳光就来了。" },
-  { "id": 92, "category": "日常类", "question": "我最喜欢和你一起做的无聊小事是...", "interpretation": "无聊的小事，像小王子看日落，一遍又一遍。但因为和你，每一遍都不一样。" },
-  { "id": 93, "category": "日常类", "question": "你做的哪顿饭我最爱吃...", "interpretation": "那顿饭的味道，像小王子星球上的日落，是独一份的。别处吃不到。" },
-  { "id": 94, "category": "日常类", "question": "我最喜欢你在家...", "interpretation": "那个时刻，像小王子说“你下午四点钟来，那么从三点钟起，我就开始感到幸福。”" },
-  { "id": 95, "category": "日常类", "question": "我们之间最难忘的一次对话是...", "interpretation": "那次对话像一条河，流过我的心田。现在想起来，还能听见水声。" },
-  { "id": 96, "category": "日常类", "question": "我希望你比现在更擅长的事是...", "interpretation": "如果你更擅长这件事，你会像长了翅膀的小王子，飞得更轻松。" },
-  { "id": 97, "category": "日常类", "question": "我最想和你一起学的新东西是...", "interpretation": "一起学新东西，就像一起探索新的星球。每走一步，都发现新大陆。" },
-  { "id": 98, "category": "日常类", "question": "我一直没敢问你的那件事是...", "interpretation": "这个问题像一颗害羞的星星，现在终于敢探出头来了。" },
-  { "id": 99, "category": "日常类", "question": "你无意中夸过我的那句话是...", "interpretation": "那句话像风吹过麦田，虽然你只是路过，但麦子记住了风。" },
-  { "id": 100, "category": "日常类", "question": "我最想和你一起过的下个节日是...", "interpretation": "节日像沙漠里的绿洲。和你一起过，就是最好的绿洲。" },
-  { "id": 101, "category": "日常类", "question": "你随口夸过我的话，我一直记得是...", "interpretation": "你的随口一说，却在我心里种下了一朵花。它一直在开。" }
-];
+            { "id": 1, "category": "🌹 感恩类", "question": "谢谢你，因为...", "interpretation": "就像小王子给玫瑰浇水，每一句“谢谢”都会让那颗心开出更美的花。你记着的那些小事，是对方星球上最亮的星星。" },
+            { "id": 2, "category": "🌹 感恩类", "question": "感谢你为我做的...", "interpretation": "小王子说，仪式感就是使某一天与其他日子不同。谢谢你做的这件事，让我的这一天闪闪发光。" },
+            { "id": 3, "category": "🌹 感恩类", "question": "最想对你说谢谢的瞬间是...", "interpretation": "那一刻像沙漠里的井水，后来每次想起，都像又喝到了甘甜。说出来，让那口井永不干涸。" },
+            { "id": 4, "category": "🌹 感恩类", "question": "你给过我最好的礼物是...", "interpretation": "重要的东西用眼睛是看不见的。你给的这份礼物，用心才能看见，它一直在我心里。" },
+            { "id": 5, "category": "🌹 感恩类", "question": "你教会我最重要的事是...", "interpretation": "小王子从狐狸那里学会了“驯服”，我从你这里学会了...。从此，我们成了彼此独一无二的人。" },
+            { "id": 6, "category": "🌹 感恩类", "question": "我最感激你陪我...", "interpretation": "哪怕什么都不做，只是坐在我身边，就像小王子看日落。有你陪着，那天边的晚霞都变得更温柔。" },
+            { "id": 7, "category": "🌹 感恩类", "question": "你让我想起被理解的那次是...", "interpretation": "那一刻，你像小王子懂他的玫瑰那样懂我——知道我需要什么，即使我什么都没说。" },
+            { "id": 8, "category": "🌹 感恩类", "question": "你为我做过最让我感动的事是...", "interpretation": "这件事像小王子给玫瑰罩上的玻璃罩，保护着我心里最柔软的地方。我一直记得。" },
+            { "id": 9, "category": "🌹 感恩类", "question": "我最想替你分担的事是...", "interpretation": "如果我能帮你拔掉猴面包树的幼苗，你会不会轻松一点？让我试试，哪怕只是陪着你。" },
+            { "id": 10, "category": "🌹 感恩类", "question": "最近一次觉得你受委屈了是...", "interpretation": "你受委屈的时候，像被风吹歪的小花。我想把你扶正，告诉你：我在呢。" },
+            { "id": 11, "category": "🌹 感恩类", "question": "我最想回报你的一件事是...", "interpretation": "你给我的那些好，像星星一样多。我只想摘下一颗最亮的，放在你的手心里。" },
+            { "id": 12, "category": "🌹 感恩类", "question": "你让觉得自己很特别的时刻是...", "interpretation": "那一刻，你看着我的眼神，就像小王子看着他的玫瑰——我知道，在你的星球上，只有我这一朵。" },
+            { "id": 13, "category": "🌹 感恩类", "question": "我最喜欢你对我说的一句话是...", "interpretation": "那句话像沙漠里的回声，每次想起来，都让我觉得自己并不孤单。" },
+            { "id": 14, "category": "🌹 感恩类", "question": "你默默为我做的那件事我其实知道...", "interpretation": "你像小王子夜里给花浇水，以为我不知道。其实我都看见了，只是没说。现在我想告诉你：谢谢你。" },
+            { "id": 15, "category": "🌹 感恩类", "question": "我最想为你做的一件事是...", "interpretation": "如果你是我的玫瑰，我想为你做一件只有我能做的事。告诉我，是什么。" },
+            { "id": 16, "category": "🦊 心疼类", "question": "最近一次心疼你是因为...", "interpretation": "那一刻，我仿佛看见你像被烈日晒蔫的玫瑰。我想为你遮住那道光，哪怕只有一会儿。" },
+            { "id": 17, "category": "🦊 心疼类", "question": "我最怕你累着的时候是...", "interpretation": "就像小王子担心他的玫瑰被风吹倒。你累的时候，我心里就刮起了风。" },
+            { "id": 18, "category": "🦊 心疼类", "question": "看到你难过我却没说话那次是...", "interpretation": "有时候，话像沙子一样堵在喉咙里。但我的沉默不是没看见，是我不知道该怎么安慰你。" },
+            { "id": 19, "category": "🦊 心疼类", "question": "你为了不让我担心，隐瞒过的事是...", "interpretation": "你像那朵骄傲的玫瑰，说自己不怕老虎，其实只是不想让我担心。可你忘了，用心才能看见。" },
+            { "id": 20, "category": "🦊 心疼类", "question": "我最想替你承受的事是...", "interpretation": "如果能把你的痛苦种在我的星球上，让它变成一棵普通的树，我愿意。" },
+            { "id": 21, "category": "🦊 心疼类", "question": "我看到你特别累却还在坚持的时候是...", "interpretation": "你像小王子一天看了四十三次日落，明明累了，却还在等。那一刻，我想抱住你。" },
+            { "id": 22, "category": "🦊 心疼类", "question": "你藏在笑容里的疲惫我看到了...", "interpretation": "笑容像玻璃罩，你把疲惫藏在里面。可我看见了，因为我的心也在看着你。" },
+            { "id": 23, "category": "🦊 心疼类", "question": "我最怕你为我担心的事是...", "interpretation": "就像小王子怕玫瑰被羊吃掉。如果你担心我，我也会担心你的担心。所以，我们都要好好的。" },
+            { "id": 24, "category": "🦊 心疼类", "question": "你逞强那次我其实想抱抱你...", "interpretation": "你像那朵说“我不怕风”的玫瑰，可我知道你只是在假装。那一刻，我只想轻轻抱住你。" },
+            { "id": 25, "category": "🦊 心疼类", "question": "我最希望你对自己好一点的地方是...", "interpretation": "小王子对他的玫瑰那么好，可你对自己却不够好。让我来提醒你：你也值得被好好照顾。" },
+            { "id": 26, "category": "🦊 心疼类", "question": "你偷偷哭过的那次我知道是因为...", "interpretation": "眼泪是心里的露水。你的那次哭泣，被我看见了。我想告诉你：哭也没关系，我会陪着你。" },
+            { "id": 27, "category": "🦊 心疼类", "question": "我最怕你一个人扛着的事是...", "interpretation": "如果你扛着一座山，我只想帮你分担一块石头。一个人扛太重，我们一起就会轻一些。" },
+            { "id": 28, "category": "🦊 心疼类", "question": "你累垮那次我最想说的话是...", "interpretation": "你累倒的时候，像被风吹断的花。我想说的那句话，现在终于能说了：你辛苦了，我在。" },
+            { "id": 29, "category": "🦊 心疼类", "question": "我最希望你放下的事是...", "interpretation": "有些事像包袱里的石头，背久了会累。放下吧，我们一起看着它变成脚下的路。" },
+            { "id": 30, "category": "🦊 心疼类", "question": "你让我心疼又帮不上忙的时候是...", "interpretation": "那种感觉，像小王子站在沙漠里，想给花浇水却没有水。但我至少可以陪着你，一起等雨来。" },
+            { "id": 31, "category": "⭐ 骄傲类", "question": "我最为你骄傲的时刻是...", "interpretation": "那一刻，你像小王子终于驯服了狐狸——不是因为征服，而是因为你用心了。我为你骄傲。" },
+            { "id": 32, "category": "⭐ 骄傲类", "question": "你最让我佩服的优点是...", "interpretation": "这个优点像你星球上独有的花，别处找不到。我真高兴，它长在你身上。" },
+            { "id": 33, "category": "⭐ 骄傲类", "question": "你做过的让我最自豪的一件事是...", "interpretation": "这件事，让我想起小王子说：“如果你驯服了我，我们就互相需要了。”你让我觉得，我们彼此需要着。" },
+            { "id": 34, "category": "⭐ 骄傲类", "question": "我最想跟别人炫耀你的是...", "interpretation": "每次说到你，我都像在数我的星星——每一颗都那么亮，让我忍不住想告诉所有人。" },
+            { "id": 35, "category": "⭐ 骄傲类", "question": "你战胜过最大的困难是...", "interpretation": "困难像沙漠，而你像找到了水井的小王子。你让相信，只要走，总能找到绿洲。" },
+            { "id": 36, "category": "⭐ 骄傲类", "question": "你让我最刮目相看的一次是...", "interpretation": "我一直以为你是我的玫瑰，可那次，你像一棵能遮风挡雨的大树。原来你也会长大。" },
+            { "id": 37, "category": "⭐ 骄傲类", "question": "我最欣赏你性格里的...", "interpretation": "这个性格像你星球的颜色，别人可能看不见，但对我来说，那就是独一无二的光。" },
+            { "id": 38, "category": "⭐ 骄傲类", "question": "你保持得最好的那个优点是...", "interpretation": "就像小王子始终爱着他的玫瑰，你也一直带着这个优点。时间没有把它带走，真好。" },
+            { "id": 40, "category": "⭐ 骄傲类", "question": "你做过的最勇敢的事是...", "interpretation": "勇敢不是不怕，而是怕了还要往前走。那一刻，你像独自穿越沙漠的小王子。" },
+            { "id": 41, "category": "⭐ 骄傲类", "question": "你最让我感动的一次坚持是...", "interpretation": "坚持像每天给花浇水，虽然看不见花开，但你知道它会开。我看见了你的等待。" },
+            { "id": 42, "category": "⭐ 骄傲类", "question": "我最喜欢你和别人不一样的地方是...", "interpretation": "就像小王子说“使沙漠更美丽的，是某个地方藏着的一口井”，你的不一样，就是让世界更美的秘密。" },
+            { "id": 43, "category": "⭐ 骄傲类", "question": "你让我觉得当妈妈/孩子真好是因为...", "interpretation": "因为有你，我的星球才不孤单。即使有时会累，但想到你，就觉得一切都值得。" },
+            { "id": 44, "category": "⭐ 骄傲类", "question": "你最让我安心的特质是...", "interpretation": "就像小王子知道他的玫瑰有玻璃罩，我知道有你在，就什么都不怕。" },
+            { "id": 45, "category": "⭐ 骄傲类", "question": "你无意识中做过的很厉害的事是...", "interpretation": "有时候，你自己都不知道，你像一颗种子，在我心里开出了花。" },
+            { "id": 46, "category": "⭐ 骄傲类", "question": "我最想成为你身上的那个优点是...", "interpretation": "你身上有道光，我想借一点，照亮我自己。告诉我，我可以学你吗？" },
+            { "id": 47, "category": "🌍 回忆类", "question": "我最难忘我们一起去过的地方是...", "interpretation": "那个地方，现在成了我心中的一颗星星。每次抬头，都会想起我们一起看过的风景。" },
+            { "id": 48, "category": "🌍 回忆类", "question": "想起你我就会笑的那个瞬间是...", "interpretation": "这个瞬间像小王子衣兜里的笑声，每次拿出来听听，整个世界都变亮了。" },
+            { "id": 49, "category": "🌍 回忆类", "question": "我最想替你挡掉的烦恼是...", "interpretation": "如果烦恼是猴面包树，我想替你拔掉它，让你的星球轻轻松松。" },
+            { "id": 50, "category": "🌍 回忆类", "question": "我们笑到停不下来的那次是因为...", "interpretation": "那笑声像一串铃铛，现在想起来，还在我耳边响。那次之后，我的世界里多了一颗会笑的星星。" },
+            { "id": 51, "category": "🌍 回忆类", "question": "我最怀念我们做过的某件事是...", "interpretation": "那件事像一条围巾，天冷的时候拿出来，还能闻到阳光的味道。" },
+            { "id": 52, "category": "🌍 回忆类", "question": "你给过我最好的惊喜是...", "interpretation": "惊喜像沙漠里忽然出现的花，让我知道，原来平凡的日子里也藏着奇迹。" },
+            { "id": 53, "category": "🌍 回忆类", "question": "我们吵过架但最难忘的那次是...", "interpretation": "吵架像一阵风，把我们的叶子吹得哗哗响。可风停之后，根却扎得更深了。" },
+            { "id": 54, "category": "🌍 回忆类", "question": "你让我想最意外的一次反应是...", "interpretation": "你就像小王子说“我那时什么也不懂！我应该根据她的行为，而不是根据她的话来判断她。”那次，我重新认识了你。" },
+            { "id": 55, "category": "🌍 回忆类", "question": "我们共同度过最难忘的那段日子是...", "interpretation": "那段日子像一起穿越沙漠，虽然累，但因为有你，每一步都算数。" },
+            { "id": 56, "category": "🌍 回忆类", "question": "我最想回到的那个和你在一起的时刻是...", "interpretation": "如果时间可以倒流，我想回到那一刻，再好好感受一次你的温度。" },
+            { "id": 57, "category": "🌍 回忆类", "question": "你为我做过最傻的事是...", "interpretation": "傻得可爱，像小王子给花画屏风。其实你不用那么傻，但我记得这份傻。" },
+            { "id": 58, "category": "🌍 回忆类", "question": "我最喜欢的我们的合照是...", "interpretation": "那张照片像一本童话书的封面，每次翻开，故事就又开始了。" },
+            { "id": 59, "category": "🌍 回忆类", "question": "你讲给我听的最有趣的故事是...", "interpretation": "那个故事像一颗种子，种在我心里，长成了一棵会讲故事的树。" },
+            { "id": 60, "category": "🌍 回忆类", "question": "我们最默契的一次配合是...", "interpretation": "那一刻，我们像两颗星球在同一个轨道上，不用说话，也知道对方在想什么。" },
+            { "id": 61, "category": "🌍 回忆类", "question": "我最想重来一遍的那个普通日子是...", "interpretation": "那一天像一杯温水，不烫不凉，刚刚好。如果再有一次，我会喝得慢一点。" },
+            { "id": 62, "category": "🔭 期望类", "question": "我希望你永远保持的是...", "interpretation": "就像小王子希望他的玫瑰永远骄傲地开着。你身上的这个，请一定不要丢掉。" },
+            { "id": 63, "category": "🔭 期望类", "question": "我想和你一起尝试的事是...", "interpretation": "一起做这件事，就像一起种一棵树。看着它慢慢长大，我们会更幸福。" },
+            { "id": 64, "category": "🔭 期望类", "question": "十年后我想和你一起做的是...", "interpretation": "十年后的某一天，我想和你一起看日落，就像小王子在他的星球上那样，什么都不说，只是看着。" },
+            { "id": 65, "category": "🔭 期望类", "question": "我最希望你学会的事是...", "interpretation": "学会这件事，就像给自己的星球挖一口井。以后你渴了，随时可以喝到甘甜的水。" },
+            { "id": 66, "category": "🔭 期望类", "question": "我想改掉自己身上的...", "interpretation": "我想让我的星球变得更好，这样你住在这里，也会更舒服。" },
+            { "id": 67, "category": "🔭 期望类", "question": "我希望我们之间能多聊的是...", "interpretation": "有些话像藏在沙子里的星星，需要我们一起找出来。多聊聊，就能看见更多的光。" },
+            { "id": 68, "category": "🔭 期望类", "question": "我最想和你一起去的地方是...", "interpretation": "那个地方，我想和你一起用脚步画一张地图。地图上只有我和你。" },
+            { "id": 69, "category": "🔭 期望类", "question": "我希望你为自己多争取的是...", "interpretation": "对自己好一点，就像小王子给他的玫瑰多罩一层玻璃。你值得。" },
+            { "id": 70, "category": "🔭 期望类", "question": "我想陪你完成的那件事是...", "interpretation": "让我陪你，就像小王子陪狐狸，一起等待属于我们的麦田颜色。" },
+            { "id": 71, "category": "🔭 期望类", "question": "我最欣赏你对待别人的方式是...", "interpretation": "你对别人的好，像小王子对全世界的好。我看在眼里，记在心里。" },
+            { "id": 72, "category": "🔭 期望类", "question": "我想成为更好的妈妈/孩子是因为...", "interpretation": "因为我想配得上你给我的爱。你让我想变成更好的人。" },
+            { "id": 73, "category": "🔭 期望类", "question": "我希望你比我活得更轻松的地方是...", "interpretation": "我不想你像我一样，被某些石头绊倒。我希望你的路上，花儿比石头多。" },
+            { "id": 74, "category": "🔭 期望类", "question": "我最想和你一起实现的目标是...", "interpretation": "这个目标像远方的星星，我们一起去追。追不追得到不重要，一起走才重要。" },
+            { "id": 75, "category": "🔭 期望类", "question": "我希望你多爱自己一点的是...", "interpretation": "爱自己，就像小王子爱他的玫瑰。因为只有你把自己照顾好了，才能更好地爱别人。" },
+            { "id": 76, "category": "🔭 期望类", "question": "我最期待我们未来的某个时刻是...", "interpretation": "那个时刻像沙漠里的日出，我知道它会来，所以每一天都充满期待。" },
+            { "id": 77, "category": "🤫 秘密类", "question": "我一直没告诉你的是...", "interpretation": "有些话像藏在箱子里的秘密，现在打开，让它变成风，吹到你的耳朵里。" },
+            { "id": 78, "category": "🤫 秘密类", "question": "我有些害怕...", "interpretation": "害怕像小王子担心他的花被羊吃掉。说出来，你就知道了我的脆弱。" },
+            { "id": 79, "category": "🤫 秘密类", "question": "我最想道歉的那件事是...", "interpretation": "做错事就像把星星弄丢了。我想把它找回来，放回原来的地方。" },
+            { "id": 80, "category": "🤫 秘密类", "question": "我偷偷为你做过的事是...", "interpretation": "就像小王子夜里给花浇水，不想让你知道。但现在，我想让你知道，你的星球上一直有光。" },
+            { "id": 81, "category": "🤫 秘密类", "question": "我其实希望你多问我...", "interpretation": "有些话，你问了，我才好意思说。就像狐狸说“你每天最好在相同的时间来”。" },
+            { "id": 82, "category": "🤫 秘密类", "question": "我最不想让你看到我...", "interpretation": "每个人都有想藏起来的影子，但如果你看见了，请别走开。" },
+            { "id": 83, "category": "🤫 秘密类", "question": "我后悔对你说过的那句话是...", "interpretation": "那句话像刺，扎了你，也扎了我自己。现在我想把它拔掉。" },
+            { "id": 84, "category": "🤫 秘密类", "question": "我藏着没说的那个委屈是...", "interpretation": "委屈像心里的石头，压久了会累。说出来，让它变成一朵云，飘走。" },
+            { "id": 85, "category": "🤫 秘密类", "question": "我其实比你想象中更在乎...", "interpretation": "有些在乎，像看不见的风，你感觉不到，但它一直在吹。" },
+            { "id": 86, "category": "🤫 秘密类", "question": "我偷偷原谅过你的事是...", "interpretation": "原谅像一场雨，下过之后，天空就晴了。现在我想告诉你，天早就晴了。" },
+            { "id": 87, "category": "🤫 秘密类", "question": "我最希望你猜到的小心思是...", "interpretation": "就像小王子希望玫瑰能懂他的沉默。我的心思，你猜到了吗？" },
+            { "id": 88, "category": "🤫 秘密类", "question": "我不敢告诉你但我很想说的是...", "interpretation": "这句话像关在盒子里的蝴蝶，现在我想放飞它，让它落在你肩上。" },
+            { "id": 89, "category": "🤫 秘密类", "question": "我其实不喜欢但又没说的是...", "interpretation": "不喜欢的事像沙漠里的石头，我不说，是因为不想让你的路更艰难。" },
+            { "id": 90, "category": "🤫 秘密类", "question": "我最想听你对我说的一句话是...", "interpretation": "那句话像井水，我等了很久。如果你说了，我会像喝到水一样，重新有力气。" },
+            { "id": 91, "category": "🤫 秘密类", "question": "我藏着的小愿望是...", "interpretation": "这个小愿望像一朵还没开的花。说出来，也许阳光就来了。" },
+            { "id": 92, "category": "☕ 日常类", "question": "我最喜欢和你一起做的无聊小事是...", "interpretation": "无聊的小事，像小王子看日落，一遍又一遍。但因为和你，每一遍都不一样。" },
+            { "id": 93, "category": "☕ 日常类", "question": "你做的哪顿饭我最爱吃...", "interpretation": "那顿饭的味道，像小王子星球上的日落，是独一份的。别处吃不到。" },
+            { "id": 94, "category": "☕ 日常类", "question": "我最喜欢你在家...", "interpretation": "那个时刻，像小王子说“你下午四点钟来，那么从三点钟起，我就开始感到幸福。”" },
+            { "id": 95, "category": "☕ 日常类", "question": "我们之间最难忘的一次对话是...", "interpretation": "那次对话像一条河，流过我的心田。现在想起来，还能听见水声。" },
+            { "id": 96, "category": "☕ 日常类", "question": "我希望你比现在更擅长的事是...", "interpretation": "如果你更擅长这件事，你会像长了翅膀的小王子，飞得更轻松。" },
+            { "id": 97, "category": "☕ 日常类", "question": "我最想和你一起学的新东西是...", "interpretation": "一起学新东西，就像一起探索新的星球。每走一步，都发现新大陆。" },
+            { "id": 98, "category": "☕ 日常类", "question": "我一直没敢问你的那件事是...", "interpretation": "这个问题像一颗害羞的星星，现在终于敢探出头来了。" },
+            { "id": 99, "category": "☕ 日常类", "question": "你无意中夸过我的那句话是...", "interpretation": "那句话像风吹过麦田，虽然你只是路过，但麦子记住了风。" },
+            { "id": 100, "category": "☕ 日常类", "question": "我最想和你一起过的下个节日是...", "interpretation": "节日像沙漠里的绿洲。和你一起过，就是最好的绿洲。" },
+            { "id": 101, "category": "☕ 日常类", "question": "你随口夸过我的话，我一直记得是...", "interpretation": "你的随口一说，却在我心里种下了一朵花。它一直在开。" }
+        ];
+
         let currentIndex = 0;
         let viewedIds = new Set();
 
-        // DOM 元素
+        // 初始化星空
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const count = 150;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${2 + Math.random() * 3}s`);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(star);
+            }
+            
+            // 添加流星
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.left = `${50 + Math.random() * 50}%`;
+                shootingStar.style.top = `${Math.random() * 30}%`;
+                container.appendChild(shootingStar);
+                setTimeout(() => shootingStar.remove(), 3000);
+            }, 8000);
+        }
+
+        // 核心逻辑
         const card = document.getElementById('card');
         const cardContainer = document.getElementById('cardContainer');
         const questionText = document.getElementById('questionText');
         const interpretationText = document.getElementById('interpretationText');
         const progressText = document.getElementById('progressText');
         const progressBar = document.getElementById('progressBar');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const randomBtn = document.getElementById('randomBtn');
-        const resetBtn = document.getElementById('resetBtn');
         
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalConfirm = document.getElementById('modalConfirm');
-        const modalCancel = document.getElementById('modalCancel');
-
-        const resetModalOverlay = document.getElementById('resetModalOverlay');
-        const resetModalConfirm = document.getElementById('resetModalConfirm');
-        const resetModalCancel = document.getElementById('resetModalCancel');
-
-        // 初始化
-        function init() {
-            // 加载进度
-            loadProgress();
-            
-            // 显示第一张
-            updateCard();
-        }
-
-        // 加载进度
         function loadProgress() {
-            const saved = localStorage.getItem('littlePrinceViewed');
+            const saved = localStorage.getItem('littlePrince_Immersive');
             if (saved) {
                 try {
-                    const parsed = JSON.parse(saved);
-                    viewedIds = new Set(parsed);
-                } catch (e) {
-                    viewedIds = new Set();
-                }
+                    viewedIds = new Set(JSON.parse(saved));
+                } catch (e) { viewedIds = new Set(); }
             }
-            updateProgressUI();
+            updateUI();
         }
 
-        // 保存进度
         function saveProgress() {
-            localStorage.setItem('littlePrinceViewed', JSON.stringify([...viewedIds]));
-            updateProgressUI();
+            localStorage.setItem('littlePrince_Immersive', JSON.stringify([...viewedIds]));
+            updateUI();
         }
 
-        // 更新进度 UI
-        function updateProgressUI() {
+        function updateUI() {
             const count = viewedIds.size;
-            const total = questions.length || 100;
-            progressText.innerText = `已展示 ${count} / ${total}`;
+            const total = questions.length;
+            progressText.innerText = `探索进度: ${count} / ${total}`;
             progressBar.style.width = `${(count / total) * 100}%`;
         }
 
-        // 更新卡片内容
         function updateCard() {
             const q = questions[currentIndex];
             if (!q) return;
 
-            // 标记当前卡片为已读
             if (!viewedIds.has(q.id)) {
                 viewedIds.add(q.id);
                 saveProgress();
             }
 
-            // 移除翻转状态
             card.classList.remove('is-flipped');
-
-            // 延迟更新文字以配合动画
             setTimeout(() => {
                 questionText.innerText = q.question;
                 interpretationText.innerText = q.interpretation;
-            }, 100);
+            }, 150);
         }
 
-        // 翻转卡片
-        cardContainer.addEventListener('click', () => {
-            card.classList.toggle('is-flipped');
-        });
+        cardContainer.addEventListener('click', () => card.classList.toggle('is-flipped'));
 
-        // 上一张
-        prevBtn.addEventListener('click', () => {
+        document.getElementById('prevBtn').addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + questions.length) % questions.length;
             updateCard();
         });
 
-        // 下一张
-        nextBtn.addEventListener('click', () => {
+        document.getElementById('nextBtn').addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % questions.length;
             updateCard();
         });
 
-        // 随机
-        randomBtn.addEventListener('click', () => {
+        document.getElementById('randomBtn').addEventListener('click', () => {
             const unviewed = questions.filter(q => !viewedIds.has(q.id));
-            
             if (unviewed.length === 0) {
-                modalOverlay.style.display = 'flex';
+                document.getElementById('modalOverlay').style.display = 'flex';
                 return;
             }
-
             const randomIdx = Math.floor(Math.random() * unviewed.length);
-            const selectedQ = unviewed[randomIdx];
-            
-            // 找到在原数组中的索引
-            currentIndex = questions.findIndex(q => q.id === selectedQ.id);
-            
-            // updateCard 会处理标记已读和保存
+            currentIndex = questions.findIndex(q => q.id === unviewed[randomIdx].id);
             updateCard();
         });
 
-        // 重置
-        function resetProgress() {
-            localStorage.removeItem('littlePrinceViewed');
+        function reset() {
+            localStorage.removeItem('littlePrince_Immersive');
             viewedIds.clear();
             currentIndex = 0;
-            updateProgressUI();
+            updateUI();
             updateCard();
-            modalOverlay.style.display = 'none';
-            resetModalOverlay.style.display = 'none';
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
         }
 
-        resetBtn.addEventListener('click', () => {
-            resetModalOverlay.style.display = 'flex';
-        });
+        document.getElementById('resetBtn').addEventListener('click', () => document.getElementById('resetModalOverlay').style.display = 'flex');
+        document.getElementById('resetModalConfirm').addEventListener('click', reset);
+        document.getElementById('resetModalCancel').addEventListener('click', () => document.getElementById('resetModalOverlay').style.display = 'none');
+        document.getElementById('modalConfirm').addEventListener('click', reset);
+        document.getElementById('modalCancel').addEventListener('click', () => document.getElementById('modalOverlay').style.display = 'none');
 
-        resetModalConfirm.addEventListener('click', resetProgress);
-        resetModalCancel.addEventListener('click', () => {
-            resetModalOverlay.style.display = 'none';
-        });
-
-        modalConfirm.addEventListener('click', resetProgress);
-        modalCancel.addEventListener('click', () => {
-            modalOverlay.style.display = 'none';
-        });
-
-        init();
+        createStars();
+        loadProgress();
+        updateCard();
     </script>
 </body>
 </html>
